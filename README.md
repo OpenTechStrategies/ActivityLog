@@ -1,8 +1,8 @@
 # Extension:ActivityLog
 
 The ActivityLog extension allows system administrators to set up logging for
-arbitrary hooks.  These log messages are sent to the main Log page at
-Special:Log
+arbitrary hooks.  These log messages are currently sent to the main Log page 
+at `Special:Log`.
 
 ## Installation
 
