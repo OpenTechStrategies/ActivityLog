@@ -12,9 +12,20 @@ class ActivityLogExecutor {
   public function execute(...$args) {
     global $wgTitle;
     $log = new LogPage('activitylog', false);
-    $log->addEntry('activity', $wgTitle, $this->hookName);
 
-    return $this->returnObject;
+    if (is_bool($this->returnObject)) {
+      $comment = $this->hookName;
+    } elseif (is_string($this->returnObject)) {
+      $comment = $this->returnObject;
+    } elseif (is_callable($this->returnObject)) {
+      $comment = call_user_func($this->returnObject, ...$args);
+    } else {
+      throw new Exception('Invalid ActivityLog hook handler.');
+    }
+
+    $log->addEntry('activity', $wgTitle, $comment);
+
+    return true;
   }
 }
 
