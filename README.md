@@ -14,18 +14,28 @@ wfLoadExtension('ActivityLog');
 
 ## Usage
 
-Configure new hooks by adding them to the `$wgActivityLogHooksToWatch` array in
-LocalSettings.php.
+`$wgActivityLogHooksToWatch` is an associative array that configures how
+ActivityLog will log [MediaWiki events](https://www.mediawiki.org/wiki/Manual:Hooks). 
 
 ``` php
+$wgActivityLogHooksToWatch['ArticleViewHeader'] = true;
+// output: 22:55, 1 July 2020 ArticleViewHeader
+
+...
+
+$wgActivityLogHooksToWatch['ArticleViewHeader'] = 'example string'
+// output: 22:56, 1 July 2020 example string
+
+// callback is invoked with hook arguments ($article, $outputDone, $pcache in this case)
 $wgActivityLogHooksToWatch['ArticleViewHeader'] = function ($article) {
-    return 'Visited article "' . $article->getTitle() . '"';
+    // callback returns an array with the user (User), action (string), target (Title), and an 
+    // optional comment (string)
+    return array($article->getContext()->getUser(), 'visited', $article->getTitle());
 };
+// output: 22:51, 1 July 2020 (link to user) (talk|contribs) visited (link to page)
+
 ```
 
-`$wgActivityLogHooksToWatch` takes booleans, strings, and anonymous functions. A
-`true` value will log the hook name, A string will log the string itself, and a
-callback will be invoked with all the arguments that are passed by the hook.
 
 [https://www.mediawiki.org/wiki/Manual:Hooks](https://www.mediawiki.org/wiki/Manual:Hooks)
 

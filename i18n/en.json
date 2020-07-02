@@ -7,5 +7,6 @@
   "activitylog-desc": "Extension to add arbitrary hooks as log messages to Special:Log",
 	"activitylogpage": "Activity log",
 	"activitylogpagetext": "A log of acitivity specified by hooks.",
-	"activitylog-activity": "performed an Activity"
+	"logentry-activitylog-activity": "$1$4$3",
+	"logentry-activitylog-simpleactivity": "$4"
 }

@@ -9,7 +9,11 @@
 	"descriptionmsg": "activitylog-desc",
 	"type": "other",
 	"LogActions": {
-		"activitylog/activity": "activitylog-activity"
+		"activitylog/activity": "activitylog-activity",
+		"activitylog/simpleactivity": "activitylog-simpleactivity"
+	},
+	"LogActionsHandlers": {
+		"activitylog/*": "LogFormatter"
 	},
 	"LogHeaders": {
 		"activitylog": "activitylogpagetext"

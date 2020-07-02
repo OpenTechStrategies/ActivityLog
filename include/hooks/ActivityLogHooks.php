@@ -11,19 +11,37 @@ class ActivityLogExecutor {
 
   public function execute(...$args) {
     global $wgTitle;
-    $log = new LogPage('activitylog', false);
+    if (is_callable($this->returnObject)) {
+      $entry = new ManualLogEntry('activitylog', 'activity');
 
-    if (is_bool($this->returnObject)) {
-      $comment = $this->hookName;
-    } elseif (is_string($this->returnObject)) {
-      $comment = $this->returnObject;
-    } elseif (is_callable($this->returnObject)) {
-      $comment = call_user_func($this->returnObject, ...$args);
+      list($user, $action, $target, $comment) = call_user_func($this->returnObject, ...$args);
+
+      if (is_null($user)) { throw new Exception('Log user required.'); }
+      if (is_null($action)) { throw new Exception('Log action required.'); }
+      if (is_null($target)) { throw new Exception('Log target required.'); }
+
+      $entry->setTarget($target);
+      $entry->setPerformer($user);
+      if ($comment) { $entry->setComment($comment); }
+
+      $entry->setParameters([
+        '4::action' => ' ' . $action . ' '
+      ]);
+
+      $logid = $entry->insert();
+      $entry->publish($logid);
     } else {
-      throw new Exception('Invalid ActivityLog hook handler.');
-    }
+      $log = new LogPage('activitylog', false);
 
-    $log->addEntry('activity', $wgTitle, $comment);
+      if (is_bool($this->returnObject)) {
+        $action = $this->hookName;
+      } elseif (is_string($this->returnObject)) {
+        $action = $this->returnObject;
+      } else {
+        throw new Exception('Invalid ActivityLog hook handler.');
+      }
+      $log->addEntry('simpleactivity', $wgTitle, null, array($action));
+    }
 
     return true;
   }
