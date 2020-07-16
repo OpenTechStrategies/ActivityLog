@@ -14,19 +14,27 @@ class ActivityLogExecutor {
     if (is_callable($this->returnObject)) {
       $entry = new ManualLogEntry('activitylog', 'activity');
 
-      list($user, $action, $target, $comment) = call_user_func($this->returnObject, ...$args);
+      $retn = call_user_func($this->returnObject, ...$args);
+      $user = $retn[0];
+      $target = $retn[1];
+      $messageKey = $retn[2];
+      $rest = array_slice($retn, 3);
 
       if (is_null($user)) { throw new Exception('Log user required.'); }
-      if (is_null($action)) { throw new Exception('Log action required.'); }
       if (is_null($target)) { throw new Exception('Log target required.'); }
+      if (is_null($messageKey)) { throw new Exception('Log messageKey required.'); }
 
       $entry->setTarget($target);
       $entry->setPerformer($user);
-      if ($comment) { $entry->setComment($comment); }
 
-      $entry->setParameters([
-        '4::action' => ' ' . $action . ' '
-      ]);
+      $parameters = ['4::' => $messageKey];
+
+      $idx = 5;
+      foreach($rest as $param) {
+        $parameters["$idx::"] = $param;
+      }
+      
+      $entry->setParameters($parameters);
 
       $logid = $entry->insert();
       $entry->publish($logid);

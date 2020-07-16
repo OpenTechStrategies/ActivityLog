@@ -8,12 +8,11 @@
 	"url": "https://github.com/OpenTechStrategies/torque",
 	"descriptionmsg": "activitylog-desc",
 	"type": "other",
-	"LogActions": {
-		"activitylog/activity": "activitylog-activity",
-		"activitylog/simpleactivity": "activitylog-simpleactivity"
-	},
+  "LogActions": {
+    "activitylog/activity": "activitylog-activity"
+  },
 	"LogActionsHandlers": {
-		"activitylog/*": "LogFormatter"
+		"activitylog/*": "ActivityLogFormatter"
 	},
 	"LogHeaders": {
 		"activitylog": "activitylogpagetext"
@@ -30,7 +29,8 @@
 		]
 	},
 	"AutoloadClasses": {
-		"ActivityLogHooks": "include/hooks/ActivityLogHooks.php"
+		"ActivityLogHooks": "include/hooks/ActivityLogHooks.php",
+		"ActivityLogFormatter": "include/ActivityLogFormatter.php"
 	},
 	"Hooks": {
     "BeforeInitialize": "ActivityLogHooks::onBeforeInitialize"
