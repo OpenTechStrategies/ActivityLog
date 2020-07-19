@@ -1,5 +1,5 @@
 <?php
-  
+
 class ActivityLogFormatter extends LogFormatter {
 
   protected function getActionMessage() {

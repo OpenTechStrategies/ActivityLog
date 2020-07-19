@@ -1,7 +1,7 @@
 # Extension:ActivityLog
 
 The ActivityLog extension allows system administrators to set up logging for
-arbitrary hooks.  These log messages are currently sent to the main Log page 
+arbitrary hooks.  These log messages are currently sent to the main Log page
 at `Special:Log`.
 
 ## Installation
@@ -15,7 +15,7 @@ wfLoadExtension('ActivityLog');
 ## Usage
 
 `$wgActivityLogHooksToWatch` is an associative array that configures how
-ActivityLog will log [MediaWiki events](https://www.mediawiki.org/wiki/Manual:Hooks). 
+ActivityLog will log [MediaWiki events](https://www.mediawiki.org/wiki/Manual:Hooks).
 
 ``` php
 $wgActivityLogHooksToWatch['ArticleViewHeader'] = true;
@@ -28,7 +28,7 @@ $wgActivityLogHooksToWatch['ArticleViewHeader'] = 'example string'
 
 // callback is invoked with hook arguments ($article, $outputDone, $pcache in this case)
 $wgActivityLogHooksToWatch['ArticleViewHeader'] = function ($article) {
-    // callback returns an array with the user (User), target (Title), a messageKey (String), 
+    // callback returns an array with the user (User), target (Title), a messageKey (String),
     // following any additional parameters you might want that you can reference in the message
     return array($article->getContext()->getUser(), $article->getTitle(), $messageKey,
         $_SERVER['HTTP_REFERER']);

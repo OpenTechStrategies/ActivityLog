@@ -33,7 +33,7 @@ class ActivityLogExecutor {
       foreach($rest as $param) {
         $parameters["$idx::"] = $param;
       }
-      
+
       $entry->setParameters($parameters);
 
       $logid = $entry->insert();
